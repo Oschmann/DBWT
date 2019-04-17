@@ -1,0 +1,189 @@
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient;
+
+@{
+    Layout = "~/_Layout.cshtml";
+    Page.title = "Produkte";
+}
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-9">
+            <h1>Verfügbare Speisen (Bestseller)</h1>
+            <br />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <form id="product-list" class="form-inline" method="get" action="/Produkte.cshtml">
+                <fieldset>
+
+                    <legend>Speisenliste filtern</legend>
+                    <select name="category">
+
+                        @{
+                            string conStringOne = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+                            MySqlConnection conOne = new MySqlConnection(conStringOne);
+                            conOne.Open();
+                            MySqlCommand cmdOne;
+                            try
+                            {
+                                cmdOne = conOne.CreateCommand();
+
+                                cmdOne.CommandText = "SELECT ID, Bezeichnung, Oberkategorie FROM Kategorien";
+
+
+                                MySqlDataReader r = cmdOne.ExecuteReader();
+
+                                while (r.Read())
+                                {
+                                
+
+                                    if (@r["Oberkategorie"].ToString() == "")
+                                    {
+                                        <optgroup label="@r["Bezeichnung"]">
+                                            @MyHelpers.makeSelectionSection(r);
+                                        </optgroup>
+                                    }
+
+
+
+
+                                }
+                                r.Close();
+                            }
+                            catch (Exception e)
+                            {
+                                //throw new Exception();
+                                <p class="error">Das hat nicht geklappt.</p>
+                                <pre>@e.Message</pre>
+                            }
+                            conOne.Close();
+
+                        }
+                    </select>
+                    <br />
+                    <input type="checkbox" name="available" value="true" id="onlyAvailable">nur verfügbare
+                    <br>
+                    <input type="checkbox" name="onlyVegetarian" value="true" id="onlyVegetarian">nur vegetarische
+                    <br>
+                    <input type="checkbox" name="onlyVegan" value="true" id="onlyVegan">nur vegane
+                    <br>
+                    <br />
+                    <button type="submit" class="btn btn-info" id="filter">Speisen filtern</button>
+
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                @{
+                    string conString = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+                    MySqlConnection con = new MySqlConnection(conString);
+                    con.Open();
+                    MySqlCommand cmd;
+                    try
+                    {
+                        cmd = con.CreateCommand();
+
+                        cmd.CommandText = "SELECT m.ID, m.Name, Beschreibung, Verfügbar, Bezeichnung, Vegetarisch, Vegan, Glutenfrei, Bio FROM Mahlzeiten m JOIN Kategorien mk ON mk.ID=m.Kategorie JOIN MahlzeitEnthaeltZutat mz on mz.Mahlzeit = m.ID JOIN Zutaten mzz on mzz.ID = mz.Zutat WHERE (m.Kategorie=@kategorie OR @kategorie IS NULL) AND (Verfügbar=@verfuegbarStatus or @verfuegbarStatus IS NULL) AND (Vegetarisch=@vegetarisch or @vegetarisch is NULL) AND (Vegan=@vegan or @vegan IS NULL) AND (Bio=1 or FALSE) LIMIT 0,4";
+
+";
+                        cmd.Parameters.AddWithValue("@verfuegbarStatus", Request.Params["available"]);
+                        cmd.Parameters.AddWithValue("@kategorie", Request.Params["category"]);
+                        cmd.Parameters.AddWithValue("@vegan", Request.Params["onlyVegan"]);
+                        cmd.Parameters.AddWithValue("@vegetarisch", Request.Params["onlyVegetarian"]);
+
+
+
+                        MySqlDataReader r = cmd.ExecuteReader();
+
+                        while (r.Read())
+                        {
+
+
+
+                            @MyHelpers.makeProdukte(r);
+
+
+
+
+
+
+                        }
+                        r.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        //throw new Exception();
+                        <p class="error">Das hat nicht geklappt.</p>
+                        <pre>@e.Message</pre>
+                    }
+
+                }
+            </div>
+            <div class="row">
+                @{
+
+
+                    try
+                    {
+                        cmd = con.CreateCommand();
+
+
+
+                        if (!string.IsNullOrEmpty(Request.QueryString["available"]))
+                        {
+                            cmd.CommandText = "SELECT m.ID, Name, Beschreibung, Verfügbar, Bezeichnung FROM Mahlzeiten AS m JOIN Kategorien AS mk ON mk.ID=m.Kategorie WHERE Kategorie=1 AND Verfügbar=@verfuegbarStatus LIMIT 4,4";
+                            cmd.Parameters.AddWithValue("@verfuegbarStatus", "1");
+                        }
+                        else
+                        {
+
+
+                            cmd.CommandText = "SELECT m.ID, Name, Beschreibung, Verfügbar, Bezeichnung FROM Mahlzeiten m JOIN Kategorien mk ON mk.ID=m.Kategorie LIMIT 4,4";
+                        }
+
+                        MySqlDataReader r = cmd.ExecuteReader();
+
+                        while (r.Read())
+                        {
+
+
+
+                            @MyHelpers.makeProdukte(r);
+
+
+
+
+
+
+                        }
+                        r.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        //throw new Exception();
+                        <p class="error">Das hat nicht geklappt.</p>
+                        <pre>@e.Message</pre>
+                    }
+                    con.Close();
+                }
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <br />
+</div>
+

@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="de-de">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Produkte</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+          crossorigin="anonymous">
+    <link href="StyleSheet.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <div class="container start-header">
+            <nav class="top-navigation navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#" id="brand">e-Mensa</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="Start.html" target="_self">Start<span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item active nav-item-border">
+                            <a class="nav-link" href="Produkte.html" target="_self">Mahlzeiten</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Bestellung</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="https://www.fh-aachen.de" target="_blank">FH-Aachen</a>
+                        </li>
+                    </ul>
+                    <form class="search" action="http://www.google.de/search" method="get" target="_blank">
+                        <i class="fas fa-search"></i>
+                        <input type="hidden" name="as_sitesearch" value="www.fh-aachen.de" />
+                        <input type="text" id="search" name="q" placeholder="Suchen" />
+                        <input type="submit" />
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-9">
+                <h1>Verfügbare Speisen (Bestseller)</h1>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <form id="product-list" class="form-inline">
+                    <fieldset>
+                        <legend>Speisenliste filtern</legend>
+                        <select>
+                            <option value="Kategorien">Kategorien</option>
+                            <option value="Kategorien" disabled>Diverses</option>
+                        </select>
+                        <br />
+                        <input type="checkbox" name="products" value="avaiable">nur verfügbare<br>
+                        <input type="checkbox" name="products" value="vegetarian">nur vegetarische<br>
+                        <input type="checkbox" name="products" value="vegan">nur vegane<br><br />
+                        <button type="button" class="btn btn-info">Speisen filtern</button>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-1">
+                        <h5>Curry Wok</h5>
+                        <a href="Detail.html" target="_self">Details</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-2">
+                        <h5>Schnitzel</h5>
+                        <a href="Detail.html" target="_self">Details</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-3">
+                        <h5>Bratrolle</h5>
+                        <a href="Detail.html" target="_self" class="disabled">vergriffen</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-4">
+                        <h5>Krautsalat</h5>
+                        <a href="Detail.html" target="_self">Details</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-5">
+                        <h5>Falafel</h5>
+                        <a href="Detail.html" target="_self">Details</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-6">
+                        <h5>Currywurst</h5>
+                        <a href="Detail.html" target="_self">Details</a>
+                    </div>
+                    <div class="col-sm-2">
+
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-7">
+                        <h5>Käsestulle</h5>
+                        <a href="Detail.html" target="_self">Details</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://picsum.photos/142/104/" class="img-fluid" alt="Responsive image" id="product-image-8">
+                        <h5>Spiegelei</h5>
+                        <a href="Detail.html" target="_self">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+
+    <footer>
+        <div class="container start-footer">
+            <div class="row">
+                <div class="col-sm-3">
+                    <p>(c) 2017 DBWT</p>
+                </div>
+                <div class="col-sm-9">
+                    <ul class="nav">
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link active" href="#">Login</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Registrieren</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Zutatenliste</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="Impressum.html">Impressum</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>

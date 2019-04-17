@@ -1,0 +1,90 @@
+﻿@using System.Configuration;
+@using MySql.Data.MySqlClient;
+@using DBWTPaket5.Models;
+
+@helper makeSelectionSection(int Oberkategorie, Kategorien neueKategorie, int selectedKategorie)
+{
+    if (neueKategorie.Oberkategorie == Oberkategorie)
+    {
+        if (neueKategorie.ID == selectedKategorie)
+        {
+            <option value="@neueKategorie.ID" selected>@neueKategorie.Bezeichnung</option>
+        }
+        else
+        {
+            <option value="@neueKategorie.ID">@neueKategorie.Bezeichnung</option>
+        }
+    }
+}
+
+@helper makeCheckbox(string name, string id, Boolean isChecked)
+{
+    if (isChecked)
+    {
+        <label class="checkboxLabel" for="@id">
+            nur @id: <input class="theCheckboxes" type="checkbox" name="@name" value="1" id="@id" checked><br>
+        </label>
+    }
+    else
+    {
+        <label class="checkboxLabel" for="@id">
+            nur @id: <input class="theCheckboxes" type="checkbox" name="@name" value="1" id="@id"><br>
+        </label>
+    }
+
+
+
+}
+
+@helper makeBild(int id)
+{
+    Bild meinBild = Functions.GetBild(id);
+    <img src="data:mage/jpeg;base64,@meinBild.Binaerdaten" title="@meinBild.Titel" alt="@meinBild.Alt_Text" class="widthMax img-fluid" id="product-image-@id.ToString()" />
+
+}
+
+@helper makeZutatenRow(Zutat meineZutat)
+{
+    <tr>
+        <td>
+            <a href="https://www.google.de/search?q=@meineZutat.Name" title="Suchen nach @meineZutat.Name im Web" target="_blank">@meineZutat.Name</a><a>&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            @if (@meineZutat.Bio)
+            {
+                <img src="../../img/bio.png" class="width20" alt="bio-label" />
+            }
+        </td>
+        <td>
+
+
+            @if (@meineZutat.Vegan)
+            {
+                <i class="far fa-check-circle"></i>
+            }
+            else
+            {
+                <i class="far fa-circle"></i>
+            }
+
+        </td>
+        <td>
+            @if (@meineZutat.Vegetarisch)
+            {
+                <i class="far fa-check-circle"></i>
+            }
+            else
+            {
+                <i class="far fa-circle"></i>
+            }
+        </td>
+        <td>
+            @if (@meineZutat.Glutenfrei)
+            {
+                <i class="far fa-check-circle"></i>
+            }
+            else
+            {
+                <i class="far fa-circle"></i>
+            }
+        </td>
+    </tr>
+}

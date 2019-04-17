@@ -1,0 +1,88 @@
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient;
+
+
+
+@{
+    Layout = "~/_Layout.cshtml";
+    Page.title = "Detail";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <br />
+            <br />
+            <form id="log-in" class="form-inline float-left" method="get" >
+                <fieldset>
+                    <legend>Login</legend>
+                    <input type="text" id="user" name="user" placeholder="Benutzer" />
+                    <br />
+                    <input type="text" id="password" name="password" placeholder="*******" />
+                    <br />
+                    <a href="#">Anmelden</a>
+                </fieldset>
+            </form>
+            <p>Melden Sie sich jetzt an, um die wirklich viel günstigeren Preise für Mitarbeiter oder Studenten zu sehen</p>
+        </div>
+
+        @{
+            string conString = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+            MySqlConnection con = new MySqlConnection(conString);
+            con.Open();
+            MySqlCommand cmd;
+            try
+            {
+                cmd = con.CreateCommand();
+                cmd.CommandText = "SELECT * FROM Mahlzeiten AS m JOIN Preise AS p ON p.Mahlzeit = m.ID LEFT JOIN MahlzeitHatBilder AS mb ON mb.Mahlzeit = m.ID LEFT JOIN Bilder AS b ON b.ID = mb.Bild WHERE m.ID=@detailID LIMIT 1";
+                cmd.Parameters.AddWithValue("@detailID", Request.QueryString["id"]);
+                MySqlDataReader r = cmd.ExecuteReader();
+
+
+
+
+                if (r == null || !r.HasRows)
+                { @section head {
+                        <meta http-equiv="refresh" content="3; url=Start.cshtml">
+                }
+                <div class="col-sm-6">
+                    <div class="alert alert-danger" role="alert">
+                        Die gesuchte ID existiert nicht!
+                    </div>
+                </div>
+            }
+
+            while (r.Read())
+            {
+
+                @MyHelpers.makeDetails(r);
+
+            }
+
+
+
+
+
+
+            r.Close();
+        }
+        catch (Exception e)
+        {
+            @section head {
+                < meta http - equiv = "refresh" content = "3; url=Start.cshtml" >
+            }
+            <div class="col-sm-6">
+                <div class="alert alert-danger" role="alert">
+                    Die gesuchte ID existiert nicht!
+                </div>
+            </div>
+        }
+        con.Close();
+
+        }
+
+        <br />
+    </div>
+
+</div>
+

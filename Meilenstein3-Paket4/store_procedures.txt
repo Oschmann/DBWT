@@ -1,0 +1,89 @@
+BJOE
+HP
+Poet_in_Exile
+dbwt2017
+
+SkAQgPo8LKWE1ljc3gz6n5c0YkMdhMd2
+
+HHUcvZlMtE4R6r8E7tHk4/3U
+
+sha1:64000:18:
+SkAQgPo8LKWE1ljc3gz6n5c0YkMdhMd2:
+HHUcvZlMtE4R6r8E7tHk4/3U
+
+
+#############STORED PROCEDURE##############
+
+DELIMITER //
+CREATE PROCEDURE user_role(IN username VARCHAR(25))
+
+READS SQL DATA
+BEGIN 
+
+DECLARE role VARCHAR(15)
+
+IF (SELECT COUNT(*) FROM Studenten AS s JOIN FH_Angehoerige AS a ON s.Nummer = a.Nummer JOIN Benutzer AS b ON b.Nummer = a.Nummer WHERE b.Nutzername= username) = 1 THEN SET role='Student';
+ELSEIF (SELECT COUNT(*) FROM Mitarbeiter AS m JOIN FH_Angehoerige AS a ON m.Nummer = a.Nummer JOIN Benutzer AS b ON b.Nummer = a.Nummer WHERE b.Nutzername= username) = 1 THEN SET role='Mitarbeiter';
+ELSE SET role='Gast';
+END IF;
+
+SELECT role;
+
+END;
+
+//
+
+DELIMITER ;
+
+
+
+
+CREATE PROCEDURE user_role(IN username VARCHAR(25))
+
+BEGIN
+
+DECLARE userNumber int;
+DECLARE role VARCHAR(15);
+
+SELECT Nummer INTO userNumber FROM Benutzer WHERE Nutzername= username;
+
+IF userNumber IN(SELECT b.Nummer FROM Mitarbeiter AS m JOIN FH_Angehoerige AS a ON m.Nummer = a.Nummer JOIN Benutzer AS b ON b.Nummer = a.Nummer) THEN SET role = 'Mitarbeiter';
+ELSEIF userNumber IN(SELECT b.Nummer FROM Studenten AS s JOIN FH_Angehoerige AS a ON s.Nummer = a.Nummer JOIN Benutzer AS b ON b.Nummer = a.Nummer) THEN SET role = 'Student';
+ELSE SET role = 'Gast';
+END IF;
+
+
+SELECT role;
+
+
+END
+
+
+
+
+MySqlDataReader r = cmd.ExecuteReader();
+
+                                while (r.Read())
+                                {
+                                    Session["user"] = Request["user"];
+                                    Session["role"] = r["role"].ToString();
+                                }
+
+
+
+
+   try
+            {
+                string foundRole = "";
+                cmd.CommandText = @"user_role";
+                cmd.Parameters.AddWithValue("@searchedNutzername", searchedNutzername);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@username", searchedNutzername);
+                cmd.Parameters.Add("@role", MySqlDbType.VarChar, 15);
+                cmd.Parameters["@username"].Direction = System.Data.ParameterDirection.Input;
+                cmd.Parameters["@role"].Direction = System.Data.ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+                foundRole = (string)cmd.Parameters["@role"].Value;
+                meinUser.Rolle = foundRole;
+            }
+            catch { }

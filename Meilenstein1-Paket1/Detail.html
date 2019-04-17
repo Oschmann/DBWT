@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="de-de">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+          crossorigin="anonymous">
+    <link href="StyleSheet.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <div class="container start-header">
+            <nav class="top-navigation navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#" id="brand">e-Mensa</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="Start.html" target="_self">Start<span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="Produkte.html" target="_self">Mahlzeiten</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Bestellung</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="https://www.fh-aachen.de" target="_blank">FH-Aachen</a>
+                        </li>
+                    </ul>
+                    <form class="search" action="http://www.google.de/search" method="get" target="_blank">
+                        <i class="fas fa-search"></i>
+                        <input type="hidden" name="as_sitesearch" value="www.fh-aachen.de" />
+                        <input type="text" id="search" name="q" placeholder="Suchen" />
+                        <input type="submit" />
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-9">
+                <h1>Details für "Falafel"</h1>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <form id="log-in" class="form-inline float-left" method="get">
+                    <fieldset>
+                        <legend>Login</legend>
+                        <input type="text" id="user" name="user" placeholder="Benutzer" />
+                        <br />
+                        <input type="text" id="password" name="password" placeholder="*******" />
+                        <br />
+                        <a href="#">Anmelden</a>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-sm-6">
+                <img src="https://picsum.photos/570/175/" class="img-fluid" alt="Responsive image">
+            </div>
+            <div class="col-sm-3">
+                <div class="float-right">
+                    <h5 class="float-right">Gast-Preis</h5>
+                    <p class="price">5,95€</p>
+                    <button type="button" class="btn btn-info align-bottom"><i class="fas fa-utensils"></i> Vorbestellen</button>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <p>Melden Sie sich jetzt an, um die wirklich viel günstigeren Preise für Mitarbeiter oder Studenten zu sehen</p>
+            </div>
+            <div class="col-sm-6">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Beschreibung</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="ingredients-tab" data-toggle="tab" href="#ingredients" role="tab" aria-controls="ingredients" aria-selected="false">Zutaten</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Bewertungen</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">Teigtasche mit Falafel aus Kicherebsen und Sesam dazu passt hervorragend der <a href="#">Krautsalat</a></div>
+                    <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">...</div>
+                    <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                        <form class="review" action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post" target="_self">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="review-remark">Bemerkung</label>
+                                    <input type="text" id="remark" name="bemerkung" placeholder="Bemerkung" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="review-review-user">Benutzer</label>
+                                    <input type="text" id="review-user" name="benutzer" placeholder="Benutzer" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="review-rating">Bewertung</label>
+                                    <select name="bewertung" class="form-control" id="rating">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="submit" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" name="matrikel" value="3155568" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" name="kontrolle" value="Osc" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+        <br />
+    </div>
+
+    <footer>
+        <div class="container start-footer">
+            <div class="row">
+                <div class="col-sm-3">
+                    <p>(c) 2017 DBWT</p>
+                </div>
+                <div class="col-sm-9">
+                    <ul class="nav">
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link active" href="#">Login</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Registrieren</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Zutatenliste</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="Impressum.html">Impressum</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>

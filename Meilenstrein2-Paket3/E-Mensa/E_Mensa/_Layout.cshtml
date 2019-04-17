@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="de-de">
+<head>
+    
+    @RenderSection("head", required: false)
+    <meta charset="utf-8" />
+    <title>Start</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+          crossorigin="anonymous">
+    <link href="~/StyleSheet.css" rel="stylesheet" />
+</head>
+
+<body>
+    @MyHelpers.getHeader()
+
+    @RenderBody()
+
+    @MyHelpers.getFooter()
+ 
+    
+</body>
+</html>

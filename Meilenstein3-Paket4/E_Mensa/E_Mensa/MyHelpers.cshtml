@@ -1,0 +1,88 @@
+﻿@using System.Configuration
+
+@helper getHeader()
+{
+    <header>
+        <div class="container">
+            <nav class="top-navigation navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#" id="brand">e-Mensa</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active nav-item-border">
+                            <a class="nav-link" href="Start.cshtml" target="_self">Start<span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="Produkte.cshtml" target="_self">Mahlzeiten</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Bestellung</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="https://www.fh-aachen.de" target="_blank">FH-Aachen</a>
+                        </li>
+                    </ul>
+                    <form class="search" action="http://www.google.de/search" method="get" target="_blank">
+                        <i class="fas fa-search"></i>
+                        <input type="hidden" name="as_sitesearch" value="www.fh-aachen.de" />
+                        <input type="text" id="search" name="q" placeholder="Suchen" />
+                        <input type="submit" />
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+}
+
+@helper getFooter()
+{
+    <footer>
+        <div class="container start-footer">
+            <div class="row">
+                <div class="col-sm-3">
+                    <p>(c) 2017 DBWT </p>
+
+                </div>
+                <div class="col-sm-7">
+                    <ul class="nav">
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link active" href="#">Login</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Registrieren</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Zutatenliste</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="~/Impressum.cshtml">Impressum</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-2"><p>@DateTime.Now.ToString("HH:mm")</p></div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+}
+
+
+@helper makeZutatenRow(MySqlDataReader r)
+{
+    <tr>
+        <td><a href="http://www.google.de/search?q @r["Name"]" title="Suchen nach @r["Name"] im Web" target="_blank">@r["Name"]</a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+}

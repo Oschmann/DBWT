@@ -1,0 +1,97 @@
+﻿
+@using DBWTPaket5.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Kategorien aktuelleKategorie = new Kategorien();
+    aktuelleKategorie = Functions.GetKategorieByID(ViewBag.selectedCategory);
+    List<Kategorien> meineKategorien = Functions.GetKategorien();
+    
+
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-9">
+            <h1>Verfügbare Speisen (@aktuelleKategorie.Bezeichnung)</h1>
+            <br />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <form id="product-list" class="form-inline" method="get" action="/Produkte/Index/">
+                <fieldset>
+
+                    <legend>Speisenliste filtern</legend>
+                    <select name="category">
+                        <optgroup label="Generell">
+                            @if (aktuelleKategorie.ID == 0) {<option value="0" selected >Alle zeigen</option> }
+                            else {<option value="0">Alle zeigen</option> }
+                            
+                        </optgroup>
+
+                        @foreach (var category in meineKategorien)
+                        {
+                            if (category.Oberkategorie == 0)
+                            {
+                                <optgroup label="@category.Bezeichnung">
+                                    @foreach (var subcategory in meineKategorien)
+                                    {
+                                        @MyHelpers.makeSelectionSection(category.ID, subcategory, aktuelleKategorie.ID);
+                                    }
+                                </optgroup>
+                            }
+                        }
+                    </select>
+                    <br />
+
+                    @MyHelpers.makeCheckbox("available", "verfuegbar", ViewBag.available)
+                    @MyHelpers.makeCheckbox("onlyVegetarian", "vegetarisch", ViewBag.vegetarisch)
+                    @MyHelpers.makeCheckbox("onlyVegan", "vegan", ViewBag.vegan)
+
+                    <br>
+                    <br>
+                    <br />
+                    <button type="submit" class="btn btn-info" id="filter">Speisen filtern</button>
+
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+
+                @foreach (var meal in Model)
+                {
+                <div class="col-sm-3">
+
+                    @MyHelpers.makeBild(meal.ID)
+
+                    <h5>@meal.Name</h5>
+
+
+                    @if (!meal.Verfuegbar)
+                    {
+                        <a href="~/Detail/@meal.ID.ToString()" target="_self" class="disabled">Details</a>
+                    }
+                    else
+                    {
+                        string meinString = "Detail/" + meal.ID;
+                        @Html.ActionLink("Details", meinString, "Produkte")
+                    }
+
+                </div>
+                }
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <br />
+</div>

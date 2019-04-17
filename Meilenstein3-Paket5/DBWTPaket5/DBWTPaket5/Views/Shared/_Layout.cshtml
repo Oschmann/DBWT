@@ -1,0 +1,103 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="de-de">
+<head>
+
+    @RenderSection("head", required: false)
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+          crossorigin="anonymous">
+    <link href="../../scripts/StyleSheet.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="top-navigation navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#" id="brand">e-Mensa</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active nav-item-border">
+
+                            @Html.ActionLink("Start", "Index", "Home", new object { }, new { @class = "nav-link", @target = "_self" })
+
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+
+                            @Html.ActionLink("Mahlzeiten", "Index", "Produkte", new object { }, new { @class = "nav-link", @target = "_self" })
+
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Bestellung</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="https://www.fh-aachen.de" target="_blank">FH-Aachen</a>
+                        </li>
+                    </ul>
+                    <form class="search" action="http://www.google.de/search" method="get" target="_blank">
+                        <i class="fas fa-search"></i>
+                        <input type="hidden" name="as_sitesearch" value="www.fh-aachen.de" />
+                        <input type="text" id="search" name="q" placeholder="Suchen" />
+                        <input type="submit" />
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <footer>
+        <div class="container start-footer">
+            <div class="row">
+                <div class="col-sm-3">
+                    <p>(c) 2017 DBWT </p>
+
+                </div>
+                <div class="col-sm-7">
+                    <ul class="nav">
+                        <li class="nav-item nav-item-border">
+                            @Html.ActionLink("Login", "Login", "User", new object { }, new { @class = "nav-link", @target = "_self" })
+
+                        </li>
+                        @if (string.IsNullOrEmpty(Session["user"] as string)){
+                        <li class="nav-item nav-item-border">
+                            @Html.ActionLink("Registrieren", "Registrieren", "User", new object { }, new { @class = "nav-link", @target = "_self" })
+
+                        </li>
+                        }
+                        <li class="nav-item nav-item-border">
+                            @Html.ActionLink("Zutatenliste", "Zutaten", "Produkte", new object { }, new { @class = "nav-link", @target = "_self" })
+
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            @Html.ActionLink("Impressum", "Impressum", "Home", new object { }, new { @class = "nav-link", @target = "_self" })
+
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-2"><p>@DateTime.Now.ToString("HH:mm")</p></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

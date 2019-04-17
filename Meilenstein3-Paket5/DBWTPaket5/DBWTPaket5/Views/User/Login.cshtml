@@ -1,0 +1,29 @@
+﻿@using DBWTPaket5.Models
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <form id="log-in" class="form-inline float-left" method="post" action="/User/Login">
+                <fieldset>
+                    <legend>Login</legend>
+
+                    <label class="sr-only" for="user">Benutzername</label>
+                    <label class="sr-only" for="password">Passwort</label>
+                    <input type="text" id="user" name="user" placeholder="Benutzer" />
+                    <br />
+                    <input type="password" id="password" name="password" placeholder="*******" />
+                    <br />
+                    <br />
+                    <button type="submit" class="btn-info">Anmelden</button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+</div>
+

@@ -1,0 +1,411 @@
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient;
+
+@helper getHeader()
+{
+    <header>
+        <div class="container">
+            <nav class="top-navigation navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#" id="brand">e-Mensa</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active nav-item-border">
+                            <a class="nav-link" href="Start.cshtml" target="_self">Start<span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="Produkte.cshtml" target="_self">Mahlzeiten</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Bestellung</a>
+                        </li>
+
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="https://www.fh-aachen.de" target="_blank">FH-Aachen</a>
+                        </li>
+                    </ul>
+                    <form class="search" action="http://www.google.de/search" method="get" target="_blank">
+                        <i class="fas fa-search"></i>
+                        <input type="hidden" name="as_sitesearch" value="www.fh-aachen.de" />
+                        <input type="text" id="search" name="q" placeholder="Suchen" />
+                        <input type="submit" />
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+}
+
+@helper getFooter()
+{
+    <footer>
+        <div class="container start-footer">
+            <div class="row">
+                <div class="col-sm-3">
+                    <p>(c) 2017 DBWT </p>
+
+                </div>
+                <div class="col-sm-7">
+                    <ul class="nav">
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link active" href="~/Login.cshtml">Login</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="#">Registrieren</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="~/Zutaten.cshtml">Zutatenliste</a>
+                        </li>
+                        <li class="nav-item nav-item-border">
+                            <a class="nav-link" href="~/Impressum.cshtml">Impressum</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-2"><p>@DateTime.Now.ToString("HH:mm")</p></div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+}
+
+
+@helper makeZutatenRow(MySqlDataReader r)
+{
+    <tr>
+        <td>
+            <a href="https://www.google.de/search?q=@r["Name"]" title="Suchen nach @r["Name"] im Web" target="_blank">@r["Name"]</a><a>&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            @if (Convert.ToBoolean(r["Bio"]))
+            {
+                <img src="~/img/bio.png" class="width20" alt="bio-label" />
+            }
+        </td>
+        <td>
+
+
+            @if (Convert.ToBoolean(r["Vegan"]))
+            {
+                <i class="far fa-check-circle"></i>
+            }
+            else
+            {
+                <i class="far fa-circle"></i>
+            }
+
+        </td>
+        <td>
+            @if (Convert.ToBoolean(r["Vegetarisch"]))
+            {
+                <i class="far fa-check-circle"></i>
+            }
+            else
+            {
+                <i class="far fa-circle"></i>
+            }
+        </td>
+        <td>
+            @if (Convert.ToBoolean(r["Glutenfrei"]))
+            {
+                <i class="far fa-check-circle"></i>
+            }
+            else
+            {
+                <i class="far fa-circle"></i>
+            }
+        </td>
+    </tr>
+
+}
+
+@helper makeProdukte(MySqlDataReader r)
+{
+    
+       
+    
+
+            <div class="col-sm-3">
+
+                @MyHelpers.makeBildProdukt((int)r["ID"])
+                <h5>@r["Name"]</h5>
+
+
+                @if (!Convert.ToBoolean(r["Verfügbar"]))
+                {
+                    <a href="~/Detail.cshtml?id=@r["ID"]" target="_self" class="disabled">Details</a>
+                }
+                else
+                {
+                <a href="~/Detail.cshtml?id=@r["ID"]" target="_self">Details</a>
+                }
+
+            </div>
+
+          
+        
+}
+
+
+
+
+@helper makeDetails(MySqlDataReader r)
+{
+    <div class="col-sm-6">
+        <h1>Details für "@r["Name"]"</h1>
+
+
+        @MyHelpers.makeBildDetail()
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Beschreibung</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="ingredients-tab" data-toggle="tab" href="#ingredients" role="tab" aria-controls="ingredients" aria-selected="false">Zutaten</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Bewertungen</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">@r["Beschreibung"]</div>
+            <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">...</div>
+            <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                <form class="review" action="http://bc5.m2c-lab.fh-aachen.de/form.php" method="post" target="_self">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="review-remark">Bemerkung</label>
+                            <input type="text" id="remark" name="bemerkung" placeholder="Bemerkung" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="review-review-user">Benutzer</label>
+                            <input type="text" id="review-user" name="benutzer" placeholder="Benutzer" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="review-rating">Bewertung</label>
+                            <select name="bewertung" class="form-control" id="rating">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="submit" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="hidden" name="matrikel" value="3155568" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="hidden" name="kontrolle" value="Osc" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+
+    <div class="col-sm-3">
+        <br />
+        <br />
+        <div class="float-right">
+            @if (string.IsNullOrEmpty(Session["user"] as string))
+            {
+                <h5 class="float-right">Gast-Preis</h5>
+                <p class="price">@r["Gastpreis"]</p>
+            }
+            else if (Session["role"].ToString() == "Student")
+            {
+                <h5 class="float-right">Student-Preis</h5>
+                <p class="price">@r["Studentpreis"]</p>
+            }
+            else if (Session["role"].ToString() == "Mitarbeiter")
+            {
+                <h5 class="float-right">Mitarbeiter-Preis</h5>
+                <p class="price">@r["MAPreis"]</p>
+            }
+            else
+            {
+                <h5 class="float-right">Gast-Preis</h5>
+                <p class="price">@r["Gastpreis"]</p>
+            }
+
+            <button type="button" class="btn btn-info align-bottom"><i class="fas fa-utensils"></i> Vorbestellen</button>
+        </div>
+    </div>
+
+
+}
+
+@helper makeBildDetail()
+{
+
+    string conString = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+    MySqlConnection con2 = new MySqlConnection(conString);
+    con2.Open();
+    MySqlCommand cmd2;
+    try
+    {
+        cmd2 = con2.CreateCommand();
+        cmd2.CommandText = "SELECT * FROM Mahlzeiten AS m LEFT JOIN MahlzeitHatBilder AS mb ON mb.Mahlzeit = m.ID LEFT JOIN Bilder AS b ON b.ID = mb.Bild WHERE m.ID=@detailID LIMIT 1";
+        cmd2.Parameters.AddWithValue("@detailID", Request.QueryString["id"]);
+        MySqlDataReader r2 = cmd2.ExecuteReader();
+
+        if (r2 == null || !r2.HasRows)
+        {
+            <div class="col-sm-6">
+                <div class="alert alert-danger" role="alert">
+                    Die gesuchte Bild kann nicht gefunden werden!
+                </div>
+            </div>
+        }
+
+        while (r2.Read())
+        {
+            String image = Convert.ToBase64String((byte[])r2["Binaerdaten"]);
+            <img src="data:mage/jpeg;base64,@image" title="@r2["Titel"]" alt="@r2["Alt_Text"]" width="540" />
+
+        }
+
+
+
+        r2.Close();
+    }
+
+    catch (Exception e)
+    {
+
+        <div class="col-sm-6">
+            <div class="alert alert-danger" role="alert">
+                Die gesuchte Bild kann nicht gefunden werden!
+            </div>
+        </div>
+    }
+    con2.Close();
+
+
+}
+
+
+@helper makeBildProdukt(int id)
+{
+
+    string conString = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+    MySqlConnection con2 = new MySqlConnection(conString);
+    con2.Open();
+    MySqlCommand cmd2;
+    try
+    {
+        cmd2 = con2.CreateCommand();
+        cmd2.CommandText = "SELECT * FROM Mahlzeiten AS m LEFT JOIN MahlzeitHatBilder AS mb ON mb.Mahlzeit = m.ID LEFT JOIN Bilder AS b ON b.ID = mb.Bild WHERE m.ID=@detailID LIMIT 1";
+        cmd2.Parameters.AddWithValue("@detailID", id);
+        MySqlDataReader r2 = cmd2.ExecuteReader();
+
+        if (r2 == null || !r2.HasRows)
+        {
+            <div class="col-sm-6">
+                <div class="alert alert-danger" role="alert">
+                    Die gesuchte Bild kann nicht gefunden werden!
+                </div>
+            </div>
+        }
+
+        while (r2.Read())
+        {
+            String image = Convert.ToBase64String((byte[])r2["Binaerdaten"]);
+            String id2 = "product-image-" + Convert.ToString(id);
+            <img src="data:mage/jpeg;base64,@image" title="@r2["Titel"]" alt="@r2["Alt_Text"]" class="widthMax img-fluid" id="@id2" />
+
+
+        }
+
+
+
+        r2.Close();
+    }
+
+    catch (Exception e)
+    {
+
+        <div class="col-sm-6">
+            <div class="alert alert-danger" role="alert">
+                Die gesuchte Bild kann nicht gefunden werden!
+            </div>
+        </div>
+    }
+    con2.Close();
+
+
+}
+
+@helper makeSelectionSection(MySqlDataReader r)
+{
+
+
+    string conStringOne = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+    MySqlConnection conOne = new MySqlConnection(conStringOne);
+    conOne.Open();
+    MySqlCommand cmdOne;
+    try
+    {
+        cmdOne = conOne.CreateCommand();
+
+        cmdOne.CommandText = "SELECT ID, Bezeichnung, Oberkategorie FROM Kategorien WHERE Oberkategorie=@oberkategorieID";
+        cmdOne.Parameters.AddWithValue("@oberkategorieID", r["ID"]);
+
+        MySqlDataReader rOne = cmdOne.ExecuteReader();
+
+        while (rOne.Read())
+        {
+
+            if (Request.Params["category"] != null && int.Parse(Request.Params["category"].ToString()) == int.Parse(rOne["ID"].ToString()))
+            {
+
+                <option value="@rOne["ID"]" selected>@rOne["Bezeichnung"]</option>
+
+            }
+            else
+            {
+                <option value="@rOne["ID"]">@rOne["Bezeichnung"]</option>
+            }
+
+
+
+
+
+
+        }
+        rOne.Close();
+    }
+    catch (Exception e)
+    {
+        //throw new Exception();
+        <p class="error">Das hat nicht geklappt.</p>
+        <pre>@e.Message</pre>
+    }
+    conOne.Close();
+
+
+}

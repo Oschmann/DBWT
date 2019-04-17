@@ -1,0 +1,59 @@
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient;
+
+@{
+    Page.Title = "Zutaten";
+    Layout = "~/_Layout.cshtml";
+}
+
+ 
+  
+    
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table>
+                        <colgroup><col class="width400" /><col class="width160" /><col class="width320" /><col class="width320" /></colgroup>
+                        <thead>
+                            <tr>
+                                <th>Zutat</th>
+                                <th>Vegan?</th>
+                                <th>Vegetarisch?</th>
+                                <th>Glutenfrei?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                string conString = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+                                MySqlConnection con = new MySqlConnection(conString);
+                                con.Open();
+                                MySqlCommand cmd;
+                                try
+                                {
+                                    cmd = con.CreateCommand();
+                                    cmd.CommandText = "SELECT ID, Name, Bio, Vegan, Vegetarisch, Glutenfrei FROM Zutaten ORDER BY Bio Desc, Name ASC";
+                                    MySqlDataReader r = cmd.ExecuteReader();
+                                    while (r.Read())
+                                    {
+                                        @MyHelpers.makeZutatenRow(r);
+
+                                    }
+                                    r.Close();
+                                }
+                                catch (Exception e)
+                                {
+                                    //throw new Exception();
+                                    <tr>
+                                        Das hat nicht geklappt.
+                                        @e.Message
+                                    </tr>
+                                }
+                                con.Close();
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+ 

@@ -1,0 +1,223 @@
+﻿@using System.Configuration
+@using MySql.Data.MySqlClient;
+@using PasswordSecurity;
+
+
+
+@{
+    Layout = "~/_Layout.cshtml";
+    Page.title = "Login";
+
+
+
+    if (IsPost)
+
+    {
+        string wantsToLogInHash = "";
+        if (!string.IsNullOrEmpty(Session["user"] as string))
+        {
+            if (IsPost && Request["logout"] == "true")
+            {
+                Session.Clear();
+                Session.Abandon();
+            }
+
+
+        }
+        else if (string.IsNullOrEmpty(Session["user"] as string))
+        {
+
+
+            string conString = ConfigurationManager.ConnectionStrings["dbConStr"].ConnectionString;
+            MySqlConnection con = new MySqlConnection(conString);
+            con.Open();
+            MySqlCommand cmd;
+            try
+            {
+                cmd = con.CreateCommand();
+                cmd.CommandText = "SELECT Salt, Hash FROM Benutzer WHERE Nutzername=@userName";
+                cmd.Parameters.AddWithValue("@userName", Request["user"]);
+                MySqlDataReader r = cmd.ExecuteReader();
+
+
+                while (r.Read())
+                {
+
+                    wantsToLogInHash = "sha1:64000:18:" + r["Salt"] + ":" + r["Hash"];
+
+                }
+
+
+
+                r.Close();
+            }
+            catch (Exception e)
+            { <div class="container">
+                    <div class="row">
+                        <div class="col-sm-3">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="alert alert-danger" role="alert">
+                                Fehler
+                            </div>
+                            <div class="col-sm-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            if (string.IsNullOrEmpty(Session["user"] as string) && wantsToLogInHash != "" && PasswordStorage.VerifyPassword(Request["password"], wantsToLogInHash))
+            {
+                try
+                {
+                    string foundRole = "";
+                    cmd = con.CreateCommand();
+                    cmd.CommandText = "user_role";
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@username", Request["user"]);
+                    cmd.Parameters.Add("@role", MySqlDbType.VarChar, 15);
+                    cmd.Parameters["@username"].Direction = System.Data.ParameterDirection.Input;
+                    cmd.Parameters["@role"].Direction = System.Data.ParameterDirection.Output;
+                    cmd.ExecuteNonQuery();
+                    foundRole = (string)cmd.Parameters["@role"].Value;
+                    Session["user"] = Request["user"];
+                    Session["role"] = foundRole;
+
+                }
+                catch (Exception e)
+                { <div class="container">
+                        <div class="row">
+                            <div class="col-sm-3">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="alert alert-danger" role="alert">
+                                    Fehler
+                                </div>
+                                <div class="col-sm-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                con.Close();
+
+            }
+
+            con.Close();
+        }
+        if (!string.IsNullOrEmpty(Session["user"] as string))
+        { <div class="container">
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <p>Hallo<i> @Session["user"]</i>, Sie sind angemeldet als <b>@Session["role"]</b> </p>
+                        <form action="~/Login.cshtml" method="post"><button type="submit" class="btn-info" name="logout" value="true">Abmelden</button></form>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(Session["user"] as string) && wantsToLogInHash != "" && !PasswordStorage.VerifyPassword(Request["password"], wantsToLogInHash))
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <form id="log-in" class="form-inline float-left has-error" method="post" action="~/Login.cshtml">
+                            <fieldset>
+                                <legend>Login</legend>
+                                <label class="sr-only" for="user">Benutzername</label>
+                                <label class="sr-only" for="password">Passwort</label>
+                                <p class="redText">Das hat nicht geklappt! Bitte versuchen Sie es erneut.</p>
+                                <input type="text" id="user" name="user" placeholder="Benutzer" />
+                                <br />
+                                <input type="password" id="password" name="password" placeholder="*******" />
+                                <br />
+                                <br />
+                                <button type="submit" class="btn-info">Anmelden</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+            </div>
+
+        }
+        if (string.IsNullOrEmpty(Session["user"] as string))
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <form id="log-in" class="form-inline float-left" method="post" action="~/Login.cshtml">
+                            <fieldset>
+                                <legend>Login</legend>
+
+                                <label class="sr-only" for="user">Benutzername</label>
+                                <label class="sr-only" for="password">Passwort</label>
+                                <input type="text" id="user" name="user" placeholder="Benutzer" />
+                                <br />
+                                <input type="password" id="password" name="password" placeholder="*******" />
+                                <br />
+                                <br />
+                                <button type="submit" class="btn-info">Anmelden</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+            </div>
+        }
+    }
+
+    else
+    {
+        if (string.IsNullOrEmpty(Session["user"] as string))
+        {
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <form id="log-in" class="form-inline float-left" method="post" action="~/Login.cshtml">
+                            <fieldset>
+                                <legend>Login</legend>
+
+                                <label class="sr-only" for="user">Benutzername</label>
+                                <label class="sr-only" for="password">Passwort</label>
+                                <input type="text" id="user" name="user" placeholder="Benutzer" />
+                                <br />
+                                <input type="password" id="password" name="password" placeholder="*******" />
+                                <br />
+                                <br />
+                                <button type="submit" class="btn-info">Anmelden</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <p>Hallo<i> @Session["user"]</i>, Sie sind angemeldet als <b>@Session["role"]</b> </p>
+                        <form action="~/Login.cshtml" method="post"><button type="submit" class="btn-info" name="logout" value="true">Abmelden</button></form>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+            </div>
+        }
+
+    }
+}
+
+
